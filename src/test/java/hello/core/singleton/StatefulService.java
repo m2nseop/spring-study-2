@@ -10,7 +10,4 @@ public class StatefulService {
         return price; // 이렇게 지역변수를 사용하도록 변경하면 문제점이 해결된다.
     }
 
-    public int getPrice() {
-        return price;
-    }
 }
