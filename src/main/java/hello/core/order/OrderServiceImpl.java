@@ -12,14 +12,29 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrderServiceImpl implements OrderService{
 
+//    @Autowired
     private final MemberRepository memberRepository;
+//    @Autowired
     private final DiscountPolicy discountPolicy;
 
-    @Autowired
+    @Autowired // 생성자가 하나일때는 @Autowired 생략해도 의존관계 주입됨
     public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
     }
+
+    // setter 주입 // 필드는 final 선언을 할 수 없음
+//    @Autowired
+//    public void setMemberRepository(MemberRepository memberRepository) {
+//        this.memberRepository = memberRepository;
+//    }
+//
+//    @Autowired
+//    public void setDiscountPolicy(DiscountPolicy discountPolicy) {
+//        this.discountPolicy = discountPolicy;
+//    }
+
+
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
