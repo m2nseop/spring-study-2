@@ -6,10 +6,12 @@ import hello.core.discount.RateDiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
 import hello.core.member.MemoryMemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor // final이 붙은 필드를 파라미터로 하는 생성자의 역할과 같다.
 public class OrderServiceImpl implements OrderService{
 
 //    @Autowired
@@ -17,11 +19,12 @@ public class OrderServiceImpl implements OrderService{
 //    @Autowired
     private final DiscountPolicy discountPolicy;
 
-    @Autowired // 생성자가 하나일때는 @Autowired 생략해도 의존관계 주입됨
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
-        this.memberRepository = memberRepository;
-        this.discountPolicy = discountPolicy;
-    }
+//    @RequiredArgsConstructor와 역할이 같다.
+//    @Autowired // 생성자가 하나일때는 @Autowired 생략해도 의존관계 주입됨
+//    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+//        this.memberRepository = memberRepository;
+//        this.discountPolicy = discountPolicy;
+//    }
 
     // setter 주입 // 필드는 final 선언을 할 수 없음
 //    @Autowired
