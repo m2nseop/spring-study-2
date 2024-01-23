@@ -22,7 +22,7 @@ public class OrderServiceImpl implements OrderService{
 
 //    @RequiredArgsConstructor와 역할이 같다.
     @Autowired // 생성자가 하나일때는 @Autowired 생략해도 의존관계 주입됨
-    public OrderServiceImpl(MemberRepository memberRepository, @Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy) {
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
     }
