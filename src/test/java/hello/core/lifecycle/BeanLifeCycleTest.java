@@ -18,7 +18,8 @@ public class BeanLifeCycleTest {
 
     @Configuration
     static class LifeCycleConfig {
-        @Bean
+        @Bean(initMethod = "init", destroyMethod = "close")
+        // destroyMethod를 작성하지 않아도 close나 shutdown이름을 가진 메서드를 자동으로 호출해주는 추론 기능이 있다.
         public NetworkClient networkClient() {
             NetworkClient networkClient = new NetworkClient();
             networkClient.setUrl("http://hello-spring.dev");
