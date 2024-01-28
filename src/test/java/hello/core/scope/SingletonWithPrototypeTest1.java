@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -33,22 +34,28 @@ public class SingletonWithPrototypeTest1 {
 
         ClientBean clientBean2 = ac.getBean(ClientBean.class);
         int count2 = clientBean2.logic();
-        assertThat(count2).isEqualTo(2);
+        assertThat(count2).isEqualTo(1);
         // 요청할때마 새롭게 생성되어 logic을 두번실행해도 count가 1이어야 하지만 그렇지 않다는 점이 문제점이다.
     }
 
     @Scope("singleton") // 싱글톤 스코프일 경우 생략 가능
     static class ClientBean {
-        private final PrototyeBean prototyeBean;
+//        private final PrototyeBean prototyeBean;
         // 생성시점에 주입되어 의도와는 다르게 계속 같은 prototypeBean을 사용하게 된다.
         // 문제점: 요청을 받을때마다 생성되어야할 prototype 스코프 빈의 목적을 잃어버렸다.
 
-        @Autowired // 생성자 1개일 경우 생략 가능 // 또는 @RequiredArgsConstructor를 통해 생성자 자체를 생략 가능
-        public ClientBean(PrototyeBean prototyeBean) {
-            this.prototyeBean = prototyeBean; //
-        }
+        @Autowired
+        private ObjectProvider<PrototyeBean> prototyeBeanProvider;
+
+//        @Autowired // 생성자 1개일 경우 생략 가능 // 또는 @RequiredArgsConstructor를 통해 생성자 자체를 생략 가능
+//        public ClientBean(PrototyeBean prototyeBean) {
+//            this.prototyeBean = prototyeBean; //
+//        }
 
         public int logic() {
+            PrototyeBean prototyeBean = prototyeBeanProvider.getObject();
+            // getObject가 ApplicationContext에서, 즉 스프링 컨테이너에서 prototypeBean을 찾아와주는 역할을 한다. => prototypeBean이 매번 새롭게 생성된다.
+            // 직접 컨테이너에서 찾아오는 것이 아니기 때문에 컨테이너에 대한 의존성도 떨어진다.
             prototyeBean.addCount();
             return prototyeBean.getCount();
         }
